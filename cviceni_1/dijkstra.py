@@ -10,6 +10,7 @@ graph = [[0, 5, 3, 4, None, None],
          [4, None, 1, 0, 6, None],
          [None, 3, 10, 6, 0, None],
          [None, None, None, None, None, None]]
+         
 print("Test 1 expects: 3")
 print("Test 1 gets:    " + str(dijkstra_search(graph, 0, 2)))
 print("Test 2 expects: 5")
