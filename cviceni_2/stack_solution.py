@@ -18,6 +18,7 @@ def s_pop(stack):
     else:
         print("Cannot pop from empty stack.")
 
+
 s = Stack(20)
 s_push(s, 2)
 s_push(s, 4)
