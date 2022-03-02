@@ -36,7 +36,7 @@ def nth(list, n):
     # Insert code here
     pass
 
-def insert_nth(list n, el):
+def insert_nth(list, n, el):
     # Insert code here
     pass
 
