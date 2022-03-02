@@ -23,14 +23,12 @@ def to_str(list):
     return result
 
 def len(list):
-    return list.length
+    # Insert code here
+    pass
 
 def insert_start(list, el):
-    new_node = Node(el)
-    new_node.next = list.sentinel.next
-    list.sentinel.next = new_node
-    list.sentinel.next.prev = new_node
-    new_node.previous = list.sentinel
+    # Insert code here
+    pass
 
 def nth(list, n):
     # Insert code here
