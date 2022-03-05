@@ -1,6 +1,3 @@
-from cgi import test
-
-
 class Node:
     def __init__(self, key):
         self.key = key
