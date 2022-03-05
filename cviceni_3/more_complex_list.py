@@ -67,7 +67,5 @@ baz = [101, 102, 103]
 test_list_2 = List()
 for el in baz:
     insert_start(test_list_2, el)
-
-
 print("Test 4 expects:  [47, 2, 1, 0, 23, 19, 17, 13, 11, 7, 100, 5, 2, 101, 102, 103]")
 print(f"Test 4 gets:     {to_str(concatenate(test_list, test_list_2))}\n")
