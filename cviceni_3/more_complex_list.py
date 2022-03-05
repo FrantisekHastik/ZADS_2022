@@ -69,3 +69,5 @@ for el in baz:
     insert_start(test_list_2, el)
 print("Test 4 expects:  [2, 1, 0, 43, 37, 29, 19, 13, 11, 7, 100, 3, 2, 103, 102, 101]")
 print(f"Test 4 gets:     {to_str(concatenate(test_list, test_list_2))}\n")
+print("Test 5 expects:  16")
+print(f"Test 5 gets:     {length(test_list)}\n")
