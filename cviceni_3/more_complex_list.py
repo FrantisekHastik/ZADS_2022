@@ -19,7 +19,7 @@ def to_str(list):
     result = result + "]"
     return result
 
-def len(list):
+def length(list):
     # Insert code here
     pass
 
@@ -67,5 +67,5 @@ baz = [101, 102, 103]
 test_list_2 = List()
 for el in baz:
     insert_start(test_list_2, el)
-print("Test 4 expects:  [47, 2, 1, 0, 23, 19, 17, 13, 11, 7, 100, 5, 2, 101, 102, 103]")
+print("Test 4 expects:  [2, 1, 0, 43, 37, 29, 19, 13, 11, 7, 100, 3, 2, 103, 102, 101]")
 print(f"Test 4 gets:     {to_str(concatenate(test_list, test_list_2))}\n")
