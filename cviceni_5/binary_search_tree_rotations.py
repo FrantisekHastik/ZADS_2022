@@ -85,7 +85,7 @@ test_tree = Tree()
 for el in foo:
     t_insert(test_tree, el)
 
-print("Test 1 expects:  (0 - (1 - (2 - (3 - (4 - (5 - (6 - (7 - -))))))))")
+print("Test 1 expects:  (0 - (1 - (2 - (3 - (4 - (5 - (6 - -)))))))")
 print(f"Test 1 gets:     {to_str(test_tree)}\n")
 
 rotate_l(test_tree, t_search(test_tree, 0))
