@@ -27,15 +27,6 @@ def t_insert(tree, element):
     # insert code here
     pass
 
-def t_search(tree, data):
-    index_node = tree.root
-    while (index_node is not None) and (index_node.key != data):
-        if data < index_node.key:
-            index_node = index_node.left
-        else:
-            index_node = index_node.right
-    return index_node
-
 def _set_left_child(parent_node, new_child_node):
     parent_node.left = new_child_node
     if new_child_node is not None:
