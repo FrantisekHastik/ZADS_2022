@@ -1,5 +1,3 @@
-import random
-
 class Node:
     def __init__(self, key):
         self.key = key
@@ -23,10 +21,6 @@ def to_str(obj):
 
 ######################################################################
 
-def t_insert(tree, element):
-    # insert code here
-    pass
-
 def _set_left_child(parent_node, new_child_node):
     parent_node.left = new_child_node
     if new_child_node is not None:
@@ -44,35 +38,17 @@ def _set_root(tree, new_root):
 
 
 def rotate_r(tree, node):
-    ascending_node = node.left
-    moved_subtree = ascending_node.right
-    parent_node = node.parent
-    if parent_node is not None:
-        if node is parent_node.left:
-            _set_left_child(parent_node, ascending_node)
-        else:
-            _set_right_child(parent_node, ascending_node)
-    else:
-        _set_root(tree, ascending_node)
-    _set_left_child(node, moved_subtree)
-    _set_right_child(ascending_node, node)
-    return ascending_node
+    # insert code here
+    return
 
 def rotate_l(tree, node):
-    ascending_node = node.right
-    moved_subtree = ascending_node.left
-    parent_node = node.parent
-    if parent_node is not None:
-        if node is parent_node.left:
-            _set_left_child(parent_node, ascending_node)
-        else:
-            _set_right_child(parent_node, ascending_node)
-    else:
-        _set_root(tree, ascending_node)
-    _set_right_child(node, moved_subtree)
-    _set_left_child(ascending_node, node)
-    return ascending_node
+    # insert code here
+    return
     
+def t_insert(tree, element):
+    # insert code here
+    pass
+
 def _rebalance(tree, node):
     # insert code here
     pass
@@ -80,4 +56,18 @@ def _rebalance(tree, node):
 
 ######################################################################
 
-# tests will eventually appear
+foo = list(range(7))
+test_tree_0 = Tree()
+for el in foo:
+    t_insert(test_tree_0, el)
+
+print("Test 1 expects:  (3 (1 (0 - -) (2 - -)) (5 (4 - -) (6 - -)))")
+print(f"Test 1 gets:     {to_str(test_tree_0)}\n")
+
+bar = list(range(7))
+test_tree_1 = Tree()
+for el in  bar.reverse():
+    t_insert(test_tree_1, el)
+
+print("Test 2 expects:  (3 (1 (0 - -) (2 - -)) (5 (4 - -) (6 - -)))")
+print(f"Test 2 gets:     {to_str(test_tree_1)}\n")
