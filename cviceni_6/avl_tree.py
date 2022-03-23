@@ -65,8 +65,9 @@ print("Test 1 expects:  (3 (1 (0 - -) (2 - -)) (5 (4 - -) (6 - -)))")
 print(f"Test 1 gets:     {to_str(test_tree_0)}\n")
 
 bar = list(range(7))
+bar.reverse()
 test_tree_1 = Tree()
-for el in  bar.reverse():
+for el in bar:
     t_insert(test_tree_1, el)
 
 print("Test 2 expects:  (3 (1 (0 - -) (2 - -)) (5 (4 - -) (6 - -)))")
