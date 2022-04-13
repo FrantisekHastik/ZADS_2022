@@ -91,16 +91,35 @@ def _split_child(parent_node : Node, child_index : int):
 ######################################################################
 
 def _insert_nofull(node : Node, key : int):
-    # insert your code here
-    pass
+    index = 0
+    while index < node.usage and key > node.keys[index]:
+        index += 1
+    
+    if node.is_leaf:
+        _shift_right(node, index)
+        node.keys[index] = key
+        node.usage += 1
+    else:
+        if node.children[index].usage == MAX_CAPACITY:
+            _split_child(node, index)
+            if key > node.keys[index]:
+                index += 1
+        _insert_nofull(node.children[index], key)
 
 def b_insert(tree : Tree, key : int):
-    # insert your code here
-    pass
+    if tree.root.usage == MAX_CAPACITY:
+        new_root = Node()
+        new_root.children[0] = tree.root
+        new_root.is_leaf = False
+        tree.root = new_root
+        _split_child(new_root, 0)
+        _insert_nofull(new_root, key)
+    else:
+        _insert_nofull(tree.root, key)
 
 def b_search(node : Node, key : int):
     # insert your code here
-    return [node key]
+    return [node, key]
 
 def b_delete(tree : Tree, key : int):
     _n_delete(tree.root, key)
