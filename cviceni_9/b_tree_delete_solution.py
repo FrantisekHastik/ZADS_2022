@@ -45,16 +45,11 @@ def _shift_right(node : Node, shift_place : int):
         node.keys[i] = node.keys[i - 1]
         node.children[i] = node.children[i - 1]
 
-def _shift_keys_left(node : Node, shift_place : int):
-    node.children[node.usage + 1] = node.children[node.usage]
+def _shift_left(node : Node, shift_place : int):
     for i in range(shift_place + 1, MAX_CAPACITY):
         node.keys[i - 1] = node.keys[i]
-
-def _b_min(node):
-    current_node = node
-    while not current_node.is_leaf:
-        current_node = current_node.children[0]
-    return [current_node, current_node.keys[0]]
+        node.children[i - 1] = node.children[i]
+    node.children[MAX_CAPACITY - 1] = node.children[MAX_CAPACITY]
 
 def _set_as_child(parent_node : Node, index : int, child_node : Node):
     parent_node.children[index] = child_node
@@ -88,8 +83,6 @@ def _split_child(parent_node : Node, child_index : int):
     parent_node.keys[child_index] = med_value
     parent_node.usage += 1
 
-######################################################################
-
 def _insert_nofull(node : Node, key : int):
     index = 0
     while index < node.usage and key > node.keys[index]:
@@ -106,6 +99,17 @@ def _insert_nofull(node : Node, key : int):
                 index += 1
         _insert_nofull(node.children[index], key)
 
+def _join_nodes(left_part : Node, right_part : Node, mid_value : int):
+    result = left_part
+    result.keys[result.usage] = mid_value
+    result.usage += 1
+    for i in range(right_part.usage):
+        result.keys[result.usage] = right_part.keys[i]
+        _set_as_child(result, result.usage, right_part.children[i])
+        result.usage += 1
+    _set_as_child(result, result.usage, right_part.children[right_part.usage])
+    return result
+
 def b_insert(tree : Tree, key : int):
     if tree.root.usage == MAX_CAPACITY:
         new_root = Node()
@@ -118,15 +122,98 @@ def b_insert(tree : Tree, key : int):
         _insert_nofull(tree.root, key)
 
 def b_search(node : Node, key : int):
-    # insert your code here
-    return [node, key]
+    index = 0
+    while index < node.usage and key > node.keys[index]:
+        index += 1
+    if index < node.usage and key == node.keys[index]:
+        return [node, index]
+    elif node.is_leaf:
+        return None
+    else:
+        return b_search(node.children[index], key)
 
+def _b_min(node : Node):
+    current_node = node
+    while not current_node.is_leaf:
+        current_node = current_node.children[0]
+    return [current_node, current_node.keys[0]]
+
+def _index_in_parent(node : Node):
+    if node.parent is None:
+        return None
+    else:
+        parent_node = node.parent
+        for i in range(parent_node.usage + 1):
+            if node is parent_node.children[i]:
+                return i
+
+def _sibling(node : Node, side : str):
+    if node.parent is None:
+        return None
+    else:
+        parent_node = node.parent
+        p_index = _index_in_parent(node)
+        result = parent_node.children[p_index - 1] if side == "left" else parent_node.children[p_index + 1]
+        return result
+    
 def b_delete(tree : Tree, key : int):
     _n_delete(tree, tree.root, key)
 
 def _n_delete(tree : Tree, node : Node, key : int):
-    # insert your code here
-    pass
+    [target_node, target_index] = b_search(node, key)
+    if target_node.is_leaf:
+        _shift_left(target_node, target_index)
+        target_node.usage -= 1
+        rd_node = target_node
+    else:
+        [rd_node, successor] = _b_min(target_node.children[target_index + 1])
+        target_node.keys[target_index] = successor
+        _n_delete(tree, rd_node, successor)
+    while not (rd_node.parent is None or rd_node.usage >= MIN_CAPACITY):
+        parent_index = _index_in_parent(rd_node) 
+        if parent_index > 0 and _sibling(rd_node, "left").usage > MIN_CAPACITY:
+            sibling_node = _sibling(rd_node, "left")
+            _shift_right(rd_node, 0)
+            rd_node.keys[0] = rd_node.parent.keys[parent_index - 1]
+            rd_node.parent.keys[parent_index - 1] = sibling_node.keys[sibling_node.usage - 1]
+            sibling_node.keys[sibling_node.usage - 1] = None
+            rd_node.children[0] = sibling_node.children[sibling_node.usage]
+            sibling_node.children[sibling_node.usage] = None
+            sibling_node.usage -= 1
+            rd_node.usage += 1
+        elif parent_index < rd_node.parent.usage and _sibling(rd_node, "right").usage > MIN_CAPACITY:
+            sibling_node = _sibling(rd_node, "right")
+            rd_node.keys[rd_node.usage] = rd_node.parent.keys[parent_index]
+            rd_node.parent.keys[parent_index] = sibling_node.keys[0]
+            rd_node.children[rd_node.usage + 1] = sibling_node.children[0]
+            _shift_left(sibling_node, 0)
+            sibling_node.usage -= 1
+            rd_node.usage += 1
+        else:
+            if parent_index > 0:
+                sibling_node = _sibling(rd_node, "left")
+                new_node = _join_nodes(sibling_node, rd_node, rd_node.parent.keys[parent_index - 1])
+                _shift_left(rd_node.parent, parent_index - 1)
+                _set_as_child(rd_node.parent, parent_index - 1, new_node)
+                rd_node.parent.usage -= 1
+                if rd_node.parent is tree.root and rd_node.parent.usage == 0:
+                    tree.root = new_node
+                    new_node.parent = None
+                    return
+                rd_node = new_node.parent
+            else:
+                sibling_node = _sibling(rd_node, "right")
+                new_node = _join_nodes(rd_node, sibling_node, rd_node.parent.keys[parent_index])
+                _shift_left(rd_node.parent, parent_index)
+                _set_as_child(rd_node.parent, parent_index, new_node)
+                rd_node.parent.usage -= 1
+                if rd_node.parent is tree.root and rd_node.parent.usage == 0:
+                    tree.root = new_node
+                    new_node.parent = None
+                    return
+                rd_node = new_node.parent
+
+
 
 
 ######################################################################
