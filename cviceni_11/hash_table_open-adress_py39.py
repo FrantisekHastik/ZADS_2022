@@ -1,11 +1,6 @@
-import os
-import sys
+import hashlib
 import string 
 import random
-hashseed = os.getenv('PYTHONHASHSEED')
-if not hashseed:
-    os.environ['PYTHONHASHSEED'] = '0'
-    os.execv(sys.executable, [sys.executable] + sys.argv)
 
 def to_str(obj):
     if isinstance(obj, HashTableOA):
@@ -41,8 +36,8 @@ class HashTableOA:
         self.data = [None] * size
         self.sequence = lambda key, index: (self._hash(key) + index) % self.size
 
-    def _hash(self, key):
-        return hash(key) % self.size
+    def _hash(self, key : str):
+        return int(hashlib.sha1(key).hexdigest(), 16)
 
     def set_sequence(self, type):
         if type == "LINEAR":
