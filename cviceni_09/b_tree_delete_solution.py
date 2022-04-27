@@ -215,7 +215,6 @@ def _n_delete(tree : Tree, node : Node, key : int):
 
 
 
-
 ######################################################################
 
 # Test 0: structure works
