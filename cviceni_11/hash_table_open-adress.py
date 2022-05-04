@@ -1,11 +1,7 @@
-import os
-import sys
+import hashlib
 import string 
 import random
-hashseed = os.getenv('PYTHONHASHSEED')
-if not hashseed:
-    os.environ['PYTHONHASHSEED'] = '0'
-    os.execv(sys.executable, [sys.executable] + sys.argv)
+
 
 def to_str(obj):
     if isinstance(obj, HashTableOA):
@@ -42,7 +38,7 @@ class HashTableOA:
         self.sequence = lambda key, index: (self._hash(key) + index) % self.size
 
     def _hash(self, key):
-        return hash(key) % self.size
+        return int(hashlib.sha1(key.encode("utf-8")).hexdigest(), 16) % 10**6
 
     def set_sequence(self, type):
         match type:
@@ -77,11 +73,11 @@ test(test_ht, "[None, None, None, None, None, None, None, None, None, None, None
 random.seed(42)
 for _ in range(20):
     htoa_insert(test_ht, gen_string(4))
-test(test_ht, "[None, None, None, 'OhbV', 'Z3aW', 'bJmT', '5IfL', 'vrjn', 'noGM', 'VgRV', 'rpoi', '2wMq', None, None, None, 'PSIA', None, None, 'Bcbf', 'oCLr', '9Wvg', 'ON43', 'ZcUD', 'xKmT', 'fJs1', None, 'Ih7y', 'ZkSB', 'fygw', None]")
+test(test_ht, "[None, None, None, 'OhbV', '5IfL', 'Bcbf', 'xKmT', 'rpoi', 'noGM', '2wMq', 'ZcUD', None, 'Z3aW', 'vrjn', 'fygw', 'Ih7y', 'ZkSB', 'ON43', None, None, 'VgRV', None, None, 'PSIA', 'bJmT', 'oCLr', None, 'fJs1', None, '9Wvg']")
 
 for i in ['ZcUD', 'vrjn', '9Wvg', 'Z3aW', 'fygw']:
     htoa_delete(test_ht, i)
-test(test_ht, "[None, None, None, 'OhbV', 'FREE', 'bJmT', '5IfL', 'FREE', 'noGM', 'VgRV', 'rpoi', '2wMq', None, None, None, 'PSIA', None, None, 'Bcbf', 'oCLr', 'FREE', 'ON43', 'FREE', 'xKmT', 'fJs1', None, 'Ih7y', 'ZkSB', 'FREE', None]")
+test(test_ht, "[None, None, None, 'OhbV', '5IfL', 'Bcbf', 'xKmT', 'rpoi', 'noGM', '2wMq', 'FREE', None, 'FREE', 'FREE', 'FREE', 'Ih7y', 'ZkSB', 'ON43', None, None, 'VgRV', None, None, 'PSIA', 'bJmT', 'oCLr', None, 'fJs1', None, 'FREE']")
 
 
 test_ht = HashTableOA(30)
@@ -89,11 +85,11 @@ test_ht.set_sequence("QUADRATIC")
 random.seed(42)
 for _ in range(20):
     htoa_insert(test_ht, gen_string(4))
-test(test_ht, "[None, None, None, 'OhbV', 'vrjn', 'bJmT', '5IfL', None, 'noGM', 'VgRV', 'rpoi', None, None, None, 'fJs1', 'PSIA', None, 'fygw', 'Bcbf', '9Wvg', 'xKmT', 'ON43', 'ZcUD', 'Z3aW', 'oCLr', None, 'Ih7y', 'ZkSB', '2wMq', None]")
+test(test_ht, "[None, None, 'vrjn', 'OhbV', '5IfL', 'Bcbf', 'xKmT', 'rpoi', None, None, None, 'ON43', 'Z3aW', '2wMq', None, 'ZcUD', 'ZkSB', 'fJs1', 'fygw', None, 'VgRV', 'Ih7y', None, 'PSIA', 'bJmT', 'oCLr', None, 'noGM', None, '9Wvg']")
 
 for i in ['ZcUD', 'vrjn', '9Wvg', 'Z3aW', 'fygw']:
     htoa_delete(test_ht, i)
-test(test_ht, "[None, None, None, 'OhbV', 'FREE', 'bJmT', '5IfL', None, 'noGM', 'VgRV', 'rpoi', None, None, None, 'fJs1', 'PSIA', None, 'FREE', 'Bcbf', 'FREE', 'xKmT', 'ON43', 'FREE', 'FREE', 'oCLr', None, 'Ih7y', 'ZkSB', '2wMq', None]")
+test(test_ht, "[None, None, 'FREE', 'OhbV', '5IfL', 'Bcbf', 'xKmT', 'rpoi', None, None, None, 'ON43', 'FREE', '2wMq', None, 'FREE', 'ZkSB', 'fJs1', 'FREE', None, 'VgRV', 'Ih7y', None, 'PSIA', 'bJmT', 'oCLr', None, 'noGM', None, 'FREE']")
 
 
 test_ht = HashTableOA(30)
@@ -101,8 +97,9 @@ test_ht.set_sequence("DOUBLE")
 random.seed(42)
 for _ in range(20):
     htoa_insert(test_ht, gen_string(4))
-test(test_ht, "['fJs1', None, None, 'OhbV', 'vrjn', 'bJmT', '5IfL', None, 'noGM', 'VgRV', 'rpoi', None, 'Z3aW', None, None, 'PSIA', '2wMq', None, 'Bcbf', '9Wvg', 'xKmT', 'fygw', 'ZcUD', None, 'oCLr', None, 'Ih7y', 'ZkSB', None, None]")
+test(test_ht, "['ON43', None, None, 'OhbV', '5IfL', 'Bcbf', 'vrjn', 'rpoi', None, None, None, None, 'Z3aW', None, 'noGM', 'Ih7y', 'ZkSB', None, 'fygw', None, 'VgRV', '2wMq', None, 'PSIA', 'bJmT', 'oCLr', None, 'fJs1', 'ZcUD', '9Wvg']")
 
 for i in ['ZcUD', 'vrjn', '9Wvg', 'Z3aW', 'fygw']:
     htoa_delete(test_ht, i)
-test(test_ht, "['fJs1', None, None, 'OhbV', 'FREE', 'bJmT', '5IfL', None, 'noGM', 'VgRV', 'rpoi', None, 'FREE', None, None, 'PSIA', '2wMq', None, 'Bcbf', 'FREE', 'xKmT', 'FREE', 'FREE', None, 'oCLr', None, 'Ih7y', 'ZkSB', None, None]")
+test(test_ht, "['ON43', None, None, 'OhbV', '5IfL', 'Bcbf', 'FREE', 'rpoi', None, None, None, None, 'FREE', None, 'noGM', 'Ih7y', 'ZkSB', None, 'FREE', None, 'VgRV', '2wMq', None, 'PSIA', 'bJmT', 'oCLr', None, 'fJs1', 'FREE', 'FREE']")
+
