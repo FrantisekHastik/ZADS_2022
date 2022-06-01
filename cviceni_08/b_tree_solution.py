@@ -93,7 +93,7 @@ def _insert_nofull(node : Node, key : int):
 def b_insert(tree : Tree, key : int):
     if tree.root.usage == MAX_CAPACITY:
         new_root = Node()
-        new_root.children[0] = tree.root
+        _set_as_child(new_root, 0, tree.root)
         new_root.is_leaf = False
         tree.root = new_root
         _split_child(new_root, 0)

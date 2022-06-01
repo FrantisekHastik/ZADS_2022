@@ -251,6 +251,6 @@ test(test_tree_0, 5, """(k[7, None, None] c['(k[3, None, None] c["(k[0, None, No
 b_delete(test_tree_0, 8)
 test(test_tree_0, 6, """(k[3, 7, None] c["(k[0, None, None] c['(k[-2, -1, None] c-)', '(k[1, None, None] c-)', None, None])", "(k[5, None, None] c['(k[4, None, None] c-)', '(k[6, None, None] c-)', None, None])", "(k[11, 13, None] c['(k[9, 10, None] c-)', '(k[12, None, None] c-)', '(k[15, 16, None] c-)', None])", None])""")
 
-# Test 6: chain joining and shifting works
+# Test 7: chain joining and shifting works
 b_delete(test_tree_0, 6)
 test(test_tree_0, 7, """(k[3, 11, None] c["(k[0, None, None] c['(k[-2, -1, None] c-)', '(k[1, None, None] c-)', None, None])", "(k[7, None, None] c['(k[4, 5, None] c-)', '(k[9, 10, None] c-)', None, None])", "(k[13, None, None] c['(k[12, None, None] c-)', '(k[15, 16, None] c-)', None, None])", None])""")
